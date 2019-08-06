@@ -34,7 +34,7 @@ while IFS= read -r line; do
  echo "Now downloading $line\n"
  docker run --rm -v "$(pwd)":/data -w /data inutano/sra-toolkit fasterq-dump "$line" -t /data/shm -e 12
  echo "Using pigz on $line.fastq"
- if [-s "$line.fastq" ]; then
+ if [ -s "$line.fastq" ]; then
  pigz --best "$line.fastq";
  else
  pigz --best "$line_1.fastq";
