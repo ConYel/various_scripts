@@ -32,7 +32,7 @@ fi
 done 
 
 
-while IFS= read -r line; do
+while read -r line; do
  echo "Now downloading "${line}"\n"
  docker run --rm -v "$OUTPUT_DIR":/data -w /data inutano/sra-toolkit fasterq-dump "${line}" -t /data/shm -e $PROCESSORS
  if [[ -s ${line}_1.fastq ]]; then
