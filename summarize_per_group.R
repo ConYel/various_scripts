@@ -11,4 +11,7 @@ tr_sRNA %>% as_tibble() %>%
                   q75 = partial(quantile, probs = 0.75), 
                   max = max,
                   mean = mean, 
-                  sd = sd))
+                  sd = sd)) %>% 
+left_join( tr_sRNA %>% as_tibble() %>% 
+ group_by(gene_type) %>% 
+ summarize(n = dplyr::n()) )
