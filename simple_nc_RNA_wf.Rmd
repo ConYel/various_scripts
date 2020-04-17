@@ -1,0 +1,62 @@
+---
+title: "simple_nc_RNA_wf"
+author: "Constantinos"
+date: "`r format(Sys.time(), '%a_%b_%d_%Y')`"
+output:
+  pdf_document:
+    toc: yes
+  html_document:
+    toc: yes
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+First we follow the instructions in docker [setup](https://github.com/ConYel/docker_SPAR)
+and then we will use this [docker](https://github.com/BioH4z/Dockerfile_multi_galore) container to make QC and check our reads.
+## The QC plus trimming part
+### First QC
+```{bash}
+docker run --rm -it -v $(pwd):/home/my_data biohaz/multi_galore
+
+mkdir my_data/qc_first
+
+echo 'fastqc'  --threads 8 --outdir=my_data/qc_first/  my_data/*.fastq.gz
+```
+### 1 Trimming using SPAR
+```{bash}
+for file in my_data/*.fastq.gz; do echo ./spar_prepare/smrna_adapter_cut.sh $file 10; done 
+mkdir my_data/qc_after
+echo 'fastqc'  --threads 8 --outdir= my_data/qc_after  my_data/*.fastq.gz
+```
+### 2 Trimming using trimgalore for smRNA
+```{bash}
+trim_galore -q 15  --stringency 6 --length 13 --fastqc -o 'my_data/fastQC_trimmed' -j 6
+```
+## Run SPAR part
+```{bash}
+cp hg38.fulltable.no_mRNA_no_lncRNA_piRNAonly.unique_LOC_pirDB.bed spar_pipeline/annot/hg38/hg38.fulltable.no_mRNA_no_lncRNA_piRNAonly.unique_LOC.bed 
+
+cp hg38.fulltable.no_mRNA_no_lncRNA.unique_LOC_pirDB.bed spar_pipeline/annot/hg38/hg38.fulltable.no_mRNA_no_lncRNA.unique_LOC.bed 
+
+
+for file in my_data/*trimmed.fastq.gz;do echo ./spar_pipeline/SPAR.sh $file ./my_data/results_file ./spar_pipeline/config.docker.hg38.sh  10;done 
+
+```
+
+
+
+
+
+```{r,include=FALSE}
+suppressPackageStartupMessages({
+  library('tidyverse') 
+  library('data.table')
+  library('plyranges')
+})
+options(tibble.width = Inf)
+```
+
