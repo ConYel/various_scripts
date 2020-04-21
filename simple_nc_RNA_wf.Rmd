@@ -34,7 +34,7 @@ echo 'fastqc'  --threads 8 --outdir= my_data/qc_after  my_data/*.fastq.gz
 ```
 ### 2 Trimming using trimgalore for smRNA
 ```{bash}
-trim_galore -q 15  --stringency 6 --length 13 --fastqc -o 'my_data/fastQC_trimmed' -j 6
+trim_galore --quality 15 --small_rna --stringency 6 --length 13 --fastqc --output_dir 'my_data/fastQC_trimmed' --cores 6 *.fq.gz 
 ```
 ## Run SPAR part
 ```{bash}
