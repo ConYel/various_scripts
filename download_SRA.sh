@@ -9,9 +9,6 @@ INPUT_txt="$1"
 OUTPUT_DIR="$PWD/downloaded_SRA"
 PROCESSORS="${2:-4}"
 
-mkdir "$PWD/downloaded_SRA"
-echo "it's downloading the files in : $OUTPUT_DIR with $PROCESSORS processors"
-
 DOCKER="docker" 
 PIGZ="pigz" 
 
@@ -20,6 +17,9 @@ echo "USAGE: download_SRA.sh <INPUT_txt> <PROCESSORS>, input.txt should /
 have all SRA ids, one per line, the script downloads everything on $PWD/downloaded_SRA dir" w
 exit 1 
 fi 
+
+mkdir "$PWD/downloaded_SRA"
+echo "it's downloading the files in : $OUTPUT_DIR with $PROCESSORS processors"
 
 # check prerequisites
 PREREQS="${DOCKER} ${PIGZ}" 
