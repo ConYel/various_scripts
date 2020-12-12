@@ -14,7 +14,7 @@ PIGZ="pigz"
 
 if [ $# -lt 1 ]; then 
 echo "USAGE: download_SRA.sh <INPUT_txt> <PROCESSORS>, input.txt should /
-have all SRA ids, one per line, the script downloads everything on $PWD/downloaded_SRA dir" w
+have all SRA ids, one per line, the script downloads everything on $PWD/downloaded_SRA dir"
 exit 1 
 fi 
 
